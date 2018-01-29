@@ -1,0 +1,19 @@
+.centerPanel{
+
+    width: 50%;
+    height: 50%;
+
+}
+
+.mainPanel{
+
+    align: center;
+    vertical-align: middle;
+
+}
+
+.redText{
+
+    color: red;
+
+}
