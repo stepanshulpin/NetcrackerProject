@@ -26,6 +26,7 @@ public class RegistrationView extends Composite {
     private ListBox age = new ListBox();
     private TextBox city = new TextBox();
     private Button okButton = new Button("Ok");
+    private Button backButton = new Button("Back");
 
     public RegistrationView() {
 
@@ -73,6 +74,10 @@ public class RegistrationView extends Composite {
         cellFormatter.setColSpan(8, 0, 2);
         cellFormatter.setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
+        registrationLayout.setWidget(9, 0, backButton);
+        cellFormatter.setColSpan(9, 0, 2);
+        cellFormatter.setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
         decPanel.setWidget(registrationLayout);
 
         mainPanel.setWidth(windowWidth + "px");
@@ -89,6 +94,10 @@ public class RegistrationView extends Composite {
 
     public Button getOkButton() {
         return okButton;
+    }
+
+    public Button getBackButton() {
+        return backButton;
     }
 
     public TextBox getUsername() {

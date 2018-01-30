@@ -34,6 +34,12 @@ public class MainView implements DialogBoxOpener {
     private Service service = GWT.create(Service.class);
     private Long messageTo=null;
     private Long messageFrom=null;
+    private VerticalPanel usersVerticalPanel = new VerticalPanel();
+    private VerticalPanel incomingMessagesVerticalPanel = new VerticalPanel();
+    private VerticalPanel outgoingMessagesVerticalPanel = new VerticalPanel();
+    private Button logOutButton = new Button("LogOut");
+    private Button logOutButtonIn = new Button("LogOut");
+    private Button logOutButtonOut = new Button("LogOut");
     private String login;
 
     public MainView(String login) {
@@ -201,6 +207,8 @@ public class MainView implements DialogBoxOpener {
                 userPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
                 userPanel.add(gridAndPages);
 
+
+
             }
         });
 
@@ -224,16 +232,31 @@ public class MainView implements DialogBoxOpener {
         outgoingPanel.add(pagesPanelOutgoingMessages);
 
 
+        incomingMessagesVerticalPanel.add(logOutButtonIn);
+        incomingMessagesVerticalPanel.add(incomingPanel);
+        incomingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        incomingMessagesVerticalPanel.setWidth("100%");
+        incomingMessagesVerticalPanel.setHeight("100%");
+
+        outgoingMessagesVerticalPanel.add(logOutButtonOut);
+        outgoingMessagesVerticalPanel.add(outgoingPanel);
+        outgoingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        outgoingMessagesVerticalPanel.setWidth("100%");
+        outgoingMessagesVerticalPanel.setHeight("100%");
 
 
+        messagePanel.add(incomingMessagesVerticalPanel, "Incoming");
+        messagePanel.add(outgoingMessagesVerticalPanel, "Outgoing");
 
 
-        messagePanel.add(incomingPanel, "Incoming");
-        messagePanel.add(outgoingPanel, "Outgoing");
+        usersVerticalPanel.add(logOutButton);
+        usersVerticalPanel.add(userPanel);
+        usersVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        usersVerticalPanel.setWidth("100%");
+        usersVerticalPanel.setHeight("100%");
 
 
-
-        mainPanel.add(userPanel,"Users");
+        mainPanel.add(usersVerticalPanel,"Users");
         mainPanel.add(messagePanel, "Messages");
         mainPanel.setWidth(windowWidth+"px");
         mainPanel.setHeight(windowHeight+"px");
@@ -325,6 +348,18 @@ public class MainView implements DialogBoxOpener {
 
     public TabLayoutPanel getMainPanel() {
         return mainPanel;
+    }
+
+    public Button getLogOutButton() {
+        return logOutButton;
+    }
+
+    public Button getLogOutButtonIn() {
+        return logOutButtonIn;
+    }
+
+    public Button getLogOutButtonOut() {
+        return logOutButtonOut;
     }
 
     @Override

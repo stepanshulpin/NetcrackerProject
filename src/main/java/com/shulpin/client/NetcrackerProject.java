@@ -56,6 +56,15 @@ public class NetcrackerProject implements EntryPoint {
                         }
                         else{
                             service.findUser(new User(login, password), new MethodCallback<MyResponse>() {
+                                MainView mainView;
+                                class LogOutClickHandler implements ClickHandler {
+                                    @Override
+                                    public void onClick(ClickEvent clickEvent) {
+                                        RootPanel.get("content").remove(mainView.getMainPanel());
+                                        RootPanel.get("content").add(loginView.getMainPanel());
+                                    }
+                                }
+
                                 @Override
                                 public void onFailure(Method method, Throwable throwable) {
                                     Window.alert("Error send user!");
@@ -72,8 +81,14 @@ public class NetcrackerProject implements EntryPoint {
                                         } else {
                                             if (myResponse.getResponse().equals("Correct password")) {
                                                 RootPanel.get("content").remove(loginView.getMainPanel());
-                                                MainView mainView = new MainView(login);
+                                                mainView = new MainView(login);
                                                 RootPanel.get("content").add(mainView.getMainPanel());
+                                                mainView.getLogOutButton().addClickHandler(new LogOutClickHandler());
+                                                mainView.getLogOutButtonIn().addClickHandler(new LogOutClickHandler());
+                                                mainView.getLogOutButtonOut().addClickHandler(new LogOutClickHandler());
+
+
+
                                             }
                                         }
                                     }
@@ -169,7 +184,17 @@ public class NetcrackerProject implements EntryPoint {
             }
         });
 
+        registrationView.getBackButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                RootPanel.get("content").remove(registrationView.getMainPanel());
+                RootPanel.get("content").add(loginView.getMainPanel());
+            }
+        });
+
 
 
     }
+
+
 }
