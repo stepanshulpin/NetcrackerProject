@@ -19,9 +19,9 @@ import java.util.List;
 public class MainView implements DialogBoxOpener {
 
     private InputDialog dialogBox;
-    private TabLayoutPanel mainPanel = new TabLayoutPanel(1.5, Style.Unit.EM);
+    private TabLayoutPanel mainPanel = new TabLayoutPanel(2.5, Style.Unit.EM);
     private VerticalPanel userPanel = new VerticalPanel();
-    private TabLayoutPanel messagePanel = new TabLayoutPanel(1.5, Style.Unit.EM);
+    private TabLayoutPanel messagePanel = new TabLayoutPanel(2.0, Style.Unit.EM);
     private VerticalPanel incomingPanel = new VerticalPanel();
     private VerticalPanel outgoingPanel = new VerticalPanel();
     private VerticalPanel gridAndPages = new VerticalPanel();
@@ -37,6 +37,8 @@ public class MainView implements DialogBoxOpener {
     private VerticalPanel usersVerticalPanel = new VerticalPanel();
     private VerticalPanel incomingMessagesVerticalPanel = new VerticalPanel();
     private VerticalPanel outgoingMessagesVerticalPanel = new VerticalPanel();
+    private VerticalPanel reloadPanel = new VerticalPanel();
+    private Button reload = new Button("Reload");
     private Button logOutButton = new Button("LogOut");
     private Button logOutButtonIn = new Button("LogOut");
     private Button logOutButtonOut = new Button("LogOut");
@@ -75,7 +77,7 @@ public class MainView implements DialogBoxOpener {
                             addMessagesOnIncomingGrid(messageList);
                         }
                         pagesPanelIncomingMessages.setSpacing(3);
-                        for (int k = 1; k < pages; k++) {
+                        for (int k = 1; k <= pages; k++) {
                             Button pageButton = new Button(String.valueOf(k));
                             pageButton.addClickHandler(new ClickHandler() {
                                 @Override
@@ -121,7 +123,7 @@ public class MainView implements DialogBoxOpener {
                             addMessagesOnOutgoingGrid(messageList);
                         }
                         pagesPanelOutgoingMessages.setSpacing(3);
-                        for (int k = 1; k < pages; k++) {
+                        for (int k = 1; k <= pages; k++) {
                             Button pageButton = new Button(String.valueOf(k));
                             pageButton.addClickHandler(new ClickHandler() {
                                 @Override
@@ -217,9 +219,20 @@ public class MainView implements DialogBoxOpener {
 
 
 
+        reload.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                drawMessages();
+            }
+        });
+
         incomingPanel.setSize("100%","100%");
         incomingPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         incomingPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        reloadPanel.setWidth(windowWidth*0.8+"px");
+        reloadPanel.add(reload);
+        incomingPanel.setSpacing(0);
+        incomingPanel.add(reloadPanel);
         incomingPanel.add(incomingMessages);
         incomingPanel.add(pagesPanelIncomingMessages);
 
@@ -232,12 +245,17 @@ public class MainView implements DialogBoxOpener {
         outgoingPanel.add(pagesPanelOutgoingMessages);
 
 
+
+
+
+        incomingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         incomingMessagesVerticalPanel.add(logOutButtonIn);
         incomingMessagesVerticalPanel.add(incomingPanel);
         incomingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         incomingMessagesVerticalPanel.setWidth("100%");
         incomingMessagesVerticalPanel.setHeight("100%");
 
+        outgoingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         outgoingMessagesVerticalPanel.add(logOutButtonOut);
         outgoingMessagesVerticalPanel.add(outgoingPanel);
         outgoingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -249,6 +267,7 @@ public class MainView implements DialogBoxOpener {
         messagePanel.add(outgoingMessagesVerticalPanel, "Outgoing");
 
 
+        usersVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         usersVerticalPanel.add(logOutButton);
         usersVerticalPanel.add(userPanel);
         usersVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -306,7 +325,7 @@ public class MainView implements DialogBoxOpener {
 
                         @Override
                         public void onSuccess(Method method, MyResponse myResponse) {
-                            Window.alert("delete");
+                            drawMessages();
                         }
                     });
                 }
@@ -373,7 +392,6 @@ public class MainView implements DialogBoxOpener {
 
             @Override
             public void onSuccess(Method method, MyResponse myResponse) {
-                Window.alert("The message is sent!");
                 drawMessages();
             }
         });
@@ -391,6 +409,7 @@ public class MainView implements DialogBoxOpener {
                 int sizeList =messages.size();
                 int pages = sizeList/6+1;
                 incomingMessages.clear();
+                pagesPanelIncomingMessages.clear();
                 incomingPanel.remove(incomingMessages);
                 incomingPanel.remove(pagesPanelIncomingMessages);
                 if(sizeList<6){
@@ -403,11 +422,12 @@ public class MainView implements DialogBoxOpener {
                 }
 
                 pagesPanelIncomingMessages.setSpacing(3);
-                for (int k = 1; k < pages; k++) {
+                for (int k = 1; k <= pages; k++) {
                     Button pageButton = new Button(String.valueOf(k));
                     pageButton.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent clickEvent) {
+                            incomingMessages.clear();
                             incomingPanel.remove(incomingMessages);
                             incomingPanel.remove(pagesPanelIncomingMessages);
                             int p =Integer.valueOf(pageButton.getText());
@@ -443,6 +463,7 @@ public class MainView implements DialogBoxOpener {
                 int sizeList =messages.size();
                 int pages = sizeList/6+1;
                 outgoingMessages.clear();
+                pagesPanelOutgoingMessages.clear();
                 outgoingPanel.remove(outgoingMessages);
                 outgoingPanel.remove(pagesPanelOutgoingMessages);
                 if(sizeList<6){
@@ -454,11 +475,12 @@ public class MainView implements DialogBoxOpener {
                     addMessagesOnOutgoingGrid(messageList);
                 }
                 pagesPanelOutgoingMessages.setSpacing(3);
-                for (int k = 1; k < pages; k++) {
+                for (int k = 1; k <= pages; k++) {
                     Button pageButton = new Button(String.valueOf(k));
                     pageButton.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent clickEvent) {
+                            outgoingMessages.clear();
                             outgoingPanel.remove(outgoingMessages);
                             outgoingPanel.remove(pagesPanelOutgoingMessages);
                             int p =Integer.valueOf(pageButton.getText());

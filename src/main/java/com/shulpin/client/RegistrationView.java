@@ -70,10 +70,12 @@ public class RegistrationView extends Composite {
         registrationLayout.setHTML(7,0,cityLabel);
         registrationLayout.setWidget(7,1,city);
 
+        okButton.setWidth("75px");
         registrationLayout.setWidget(8, 0, okButton);
         cellFormatter.setColSpan(8, 0, 2);
         cellFormatter.setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
+        backButton.setWidth("75px");
         registrationLayout.setWidget(9, 0, backButton);
         cellFormatter.setColSpan(9, 0, 2);
         cellFormatter.setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
