@@ -35,4 +35,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo getUserInfoById(Long id) {
         return dao.getUserInfoById(id);
     }
+
+    @Override
+    public void updateUserInfo(UserInfo userInfo) {
+        dao.updateUserInfo(userInfo);
+    }
+
+    @Override
+    public UserInfo whereNotImage() {
+        return dao.whereNotImage();
+    }
 }

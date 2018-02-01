@@ -6,11 +6,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.shulpin.shared.model.MyResponse;
 import com.shulpin.shared.model.User;
 import com.shulpin.shared.model.UserInfo;
-import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
@@ -43,16 +43,17 @@ public class NetcrackerProject implements EntryPoint {
                 String login = loginView.getUsername().getText();
                 String password = loginView.getPassword().getText();
                 if(login.length()<4){
-                    Window.alert("Login is too short!");
+                    validationLogin(0,"Login is too short!");
                 }
                 else{
+
                     RegExp validReg = RegExp.compile("^[A-Za-z]");
                     if(!validReg.test(login)){
-                        Window.alert("Login must contain only letters!");
+                        validationLogin(0,"Login must contain only letters!");
                     }
                     else{
                         if(password.length()<4){
-                            Window.alert("Password is too short!");
+                            validationLogin(1, "Password is too short!");
                         }
                         else{
                             service.findUser(new User(login, password), new MethodCallback<MyResponse>() {
@@ -73,13 +74,14 @@ public class NetcrackerProject implements EntryPoint {
                                 @Override
                                 public void onSuccess(Method method, MyResponse myResponse) {
                                     if(myResponse.getResponse().equals("Not found")){
-                                        Window.alert("Wrong username!");
+                                        validationLogin(0,"Wrong username!");
                                     }
                                     else {
-                                        if (myResponse.getResponse().equals("Wrong password")) {
-                                            Window.alert("Wrong password");
+                                        if (myResponse.getResponse().equals("Wrong password!")) {
+                                            validationLogin(1,"Wrong password");
                                         } else {
                                             if (myResponse.getResponse().equals("Correct password")) {
+                                                validationLogin(-1,"");
                                                 RootPanel.get("content").remove(loginView.getMainPanel());
                                                 mainView = new MainView(login);
                                                 RootPanel.get("content").add(mainView.getMainPanel());
@@ -111,12 +113,12 @@ public class NetcrackerProject implements EntryPoint {
                 Integer age = Integer.valueOf(registrationView.getAge().getSelectedItemText());
                 String city = registrationView.getCity().getText();
                 if(login.length()<4){
-                    Window.alert("Login is too short!");
+                    validationRegistration(0,"Login is too short!");
                 }
                 else{
                     RegExp validReg = RegExp.compile("^[A-Za-z]");
                     if(!validReg.test(login)){
-                        Window.alert("Login must contain only letters!");
+                        validationRegistration(0,"Login must contain only letters!");
                     }
                     else{
                         service.findUser(new User(login, ""), new MethodCallback<MyResponse>() {
@@ -129,12 +131,12 @@ public class NetcrackerProject implements EntryPoint {
                             public void onSuccess(Method method, MyResponse myResponse) {
                                 if(myResponse.getResponse().equals("Not found")){
                                     if(password.length()<4){
-                                        Window.alert("Password is too short!");
+                                        validationRegistration(1,"Password is too short!");
                                     }
                                     else{
                                         if(password.equals(confirmPassword)){
                                             if(city.length()==0){
-                                                Window.alert("Enter the name of the city!");
+                                                validationRegistration(3,"Enter the name of the city!");
                                             }
                                             else{
                                                 service.saveUser(new User(login, password), new MethodCallback<MyResponse>() {
@@ -146,7 +148,7 @@ public class NetcrackerProject implements EntryPoint {
                                                     @Override
                                                     public void onSuccess(Method method, MyResponse myResponse) {
                                                         if(myResponse.getResponse().equals("Save user completed")) {
-                                                            service.saveUserInfo(new UserInfo(login, gender, age, city), new MethodCallback<MyResponse>() {
+                                                            service.saveUserInfo(new UserInfo(login, gender, age, city, null), new MethodCallback<MyResponse>() {
                                                                 @Override
                                                                 public void onFailure(Method method, Throwable throwable) {
                                                                     Window.alert("Error save userInfo!");
@@ -155,9 +157,15 @@ public class NetcrackerProject implements EntryPoint {
                                                                 @Override
                                                                 public void onSuccess(Method method, MyResponse myResponse) {
                                                                     if(myResponse.getResponse().equals("Save userInfo completed")) {
-                                                                        Window.alert("Account created");
-                                                                        RootPanel.get("content").remove(registrationView.getMainPanel());
-                                                                        RootPanel.get("content").add(loginView.getMainPanel());
+                                                                        registrationView.getLoadFile().submit();
+                                                                        registrationView.getLoadFile().addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+                                                                            @Override
+                                                                            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                                                                                Window.alert("Account created");
+                                                                                RootPanel.get("content").remove(registrationView.getMainPanel());
+                                                                                RootPanel.get("content").add(loginView.getMainPanel());
+                                                                            }
+                                                                        });
                                                                     }
                                                                 }
                                                             });
@@ -170,12 +178,12 @@ public class NetcrackerProject implements EntryPoint {
                                             }
                                         }
                                         else{
-                                            Window.alert("Passwords do not match!");
+                                            validationRegistration(2,"Passwords do not match!");
                                         }
                                     }
                                 }
                                 else{
-                                    Window.alert("Such username already exists!");
+                                    validationRegistration(0,"Such username already exists!");
                                 }
                             }
                         });
@@ -196,5 +204,48 @@ public class NetcrackerProject implements EntryPoint {
 
     }
 
+
+    public void validationLogin(int textBox, String msg){
+        loginView.getUsername().removeStyleName("redOutline");
+        loginView.getPassword().removeStyleName("redOutline");
+        loginView.getValidLabel().setText("");
+        //textBox==1 password
+        //textBox==0 login
+        //textBox==-1 valid
+        if(textBox==0){
+            loginView.getUsername().addStyleName("redOutline");
+        }
+        if(textBox==1){
+            loginView.getPassword().addStyleName("redOutline");
+        }
+        loginView.getValidLabel().setText(msg);
+    }
+
+    public void validationRegistration(int textBox, String msg){
+        //textBox==0 login
+        //textBox==1 password
+        //textBox==2 confirmPassword
+        //textBox==3 city
+        //textBox==-1 valid
+        registrationView.getUsername().removeStyleName("redOutline");
+        registrationView.getPassword().removeStyleName("redOutline");
+        registrationView.getPasswordConfirm().removeStyleName("redOutline");
+        registrationView.getCity().removeStyleName("redOutline");
+
+        if(textBox==0){
+            registrationView.getUsername().addStyleName("redOutline");
+        }
+        if(textBox==1){
+            registrationView.getPassword().addStyleName("redOutline");
+        }
+        if(textBox==2){
+            registrationView.getPasswordConfirm().addStyleName("redOutline");
+        }
+        if(textBox==3){
+            registrationView.getCity().addStyleName("redOutline");
+        }
+        registrationView.getValidLabel().setText(msg);
+
+    }
 
 }

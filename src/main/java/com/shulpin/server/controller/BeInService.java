@@ -16,10 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -132,6 +135,23 @@ public class BeInService {
     @Transactional
     public ResponseEntity<UserInfo> findUserInfoById(@PathVariable("id") Long id){
         return new ResponseEntity<>(userInfoService.getUserInfoById(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/loadFile")
+    @Transactional
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public ResponseEntity loadFile(@RequestParam("file") MultipartFile uploadfile){
+        if (uploadfile.isEmpty()) {
+            return new ResponseEntity("please select a file!", HttpStatus.OK);
+        }
+        try {
+            UserInfo userInfo = userInfoService.whereNotImage();
+            userInfo.setImage(uploadfile.getBytes());
+            userInfoService.updateUserInfo(userInfo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity("Successfully uploaded - ", HttpStatus.OK);
     }
 
 }

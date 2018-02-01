@@ -13,7 +13,8 @@ public class LoginView extends Composite{
     private FlexTable loginLayout = new FlexTable();
     private DecoratorPanel decPanel = new DecoratorPanel();
 
-
+    private VerticalPanel labelAndGrid = new VerticalPanel();
+    private Label validLabel = new Label("");
     private String headline = "Log into";
     private String usernameLabel = "Username: ";
     private String passwordLabel = "Password: ";
@@ -26,6 +27,9 @@ public class LoginView extends Composite{
 
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
+
+        validLabel.setStyleName("redText");
+
         loginLayout.setCellSpacing(6);
         FlexCellFormatter cellFormatter = loginLayout.getFlexCellFormatter();
 
@@ -55,7 +59,11 @@ public class LoginView extends Composite{
         mainPanel.setHeight(windowHeight + "px");
         mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         mainPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        mainPanel.add(decPanel);
+
+        labelAndGrid.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        labelAndGrid.add(validLabel);
+        labelAndGrid.add(decPanel);
+        mainPanel.add(labelAndGrid);
     }
 
     public VerticalPanel getMainPanel() {
@@ -78,4 +86,7 @@ public class LoginView extends Composite{
         return registrationButton;
     }
 
+    public Label getValidLabel() {
+        return validLabel;
+    }
 }

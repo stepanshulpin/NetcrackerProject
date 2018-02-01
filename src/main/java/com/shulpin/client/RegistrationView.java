@@ -1,5 +1,7 @@
 package com.shulpin.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.server.testing.Gender;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
@@ -9,7 +11,8 @@ public class RegistrationView extends Composite {
     private VerticalPanel mainPanel = new VerticalPanel();
     private FlexTable registrationLayout = new FlexTable();
     private DecoratorPanel decPanel = new DecoratorPanel();
-
+    private VerticalPanel labelAndGrid = new VerticalPanel();
+    private Label validLabel = new Label("");
 
     private String headline = "Create account";
     private String usernameLabel = "Username: ";
@@ -19,12 +22,15 @@ public class RegistrationView extends Composite {
     private String genderLabel = "Gender: ";
     private String ageLabel = "Age: ";
     private String cityLabel = "City: ";
+    private String imageLabel ="Image: ";
     private TextBox username = new TextBox();
     private PasswordTextBox password = new PasswordTextBox();
     private PasswordTextBox passwordConfirm = new PasswordTextBox();
     private ListBox gender = new ListBox();
     private ListBox age = new ListBox();
     private TextBox city = new TextBox();
+    private FormPanel loadFile = new FormPanel();
+    private FileUpload loadImage = new FileUpload();
     private Button okButton = new Button("Ok");
     private Button backButton = new Button("Back");
 
@@ -33,7 +39,13 @@ public class RegistrationView extends Composite {
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
 
+        validLabel.setStyleName("redText");
 
+        loadFile.setAction("/NetcrackerProject/bein/loadFile");
+        // set form to use the POST method, and multipart MIME encoding.
+        loadFile.setEncoding(FormPanel.ENCODING_MULTIPART);
+        loadFile.setMethod(FormPanel.METHOD_POST);
+        loadImage.setName("file");
         registrationLayout.setCellSpacing(6);
         FlexTable.FlexCellFormatter cellFormatter = registrationLayout.getFlexCellFormatter();
 
@@ -70,23 +82,37 @@ public class RegistrationView extends Composite {
         registrationLayout.setHTML(7,0,cityLabel);
         registrationLayout.setWidget(7,1,city);
 
-        okButton.setWidth("75px");
-        registrationLayout.setWidget(8, 0, okButton);
-        cellFormatter.setColSpan(8, 0, 2);
-        cellFormatter.setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_CENTER);
+        loadImage.setWidth("150px");
+        loadFile.add(loadImage);
+        registrationLayout.setHTML(8,0,imageLabel);
+        registrationLayout.setWidget(8,1,loadFile);
 
-        backButton.setWidth("75px");
-        registrationLayout.setWidget(9, 0, backButton);
+        okButton.setWidth("75px");
+
+        registrationLayout.setWidget(9, 0, okButton);
         cellFormatter.setColSpan(9, 0, 2);
         cellFormatter.setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
+        backButton.setWidth("75px");
+        registrationLayout.setWidget(10, 0, backButton);
+        cellFormatter.setColSpan(10, 0, 2);
+        cellFormatter.setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
+
         decPanel.setWidget(registrationLayout);
+
+
+
 
         mainPanel.setWidth(windowWidth + "px");
         mainPanel.setHeight(windowHeight + "px");
         mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         mainPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        mainPanel.add(decPanel);
+        labelAndGrid.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        labelAndGrid.add(validLabel);
+        labelAndGrid.add(decPanel);
+
+        mainPanel.add(labelAndGrid);
 
     }
 
@@ -124,5 +150,13 @@ public class RegistrationView extends Composite {
 
     public TextBox getCity() {
         return city;
+    }
+
+    public Label getValidLabel() {
+        return validLabel;
+    }
+
+    public FormPanel getLoadFile() {
+        return loadFile;
     }
 }

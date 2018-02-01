@@ -34,4 +34,16 @@ public class UserInfoDaoImpl extends AbstractDao implements UserInfoDao {
         criteria.add(Restrictions.eq("id",id));
         return (UserInfo) criteria.uniqueResult();
     }
+
+    @Override
+    public void updateUserInfo(UserInfo userInfo) {
+        getSession().update(userInfo);
+    }
+
+    @Override
+    public UserInfo whereNotImage() {
+        Criteria criteria = getSession().createCriteria(UserInfo.class);
+        criteria.add(Restrictions.isNull("image"));
+        return (UserInfo) criteria.uniqueResult();
+    }
 }

@@ -13,4 +13,9 @@ public interface UserInfoService {
     List<UserInfo> findAllUsersWithoutUsername(String username);
 
     UserInfo getUserInfoById(Long id);
+
+    void updateUserInfo(UserInfo userInfo);
+
+    UserInfo whereNotImage();
+
 }

@@ -10,6 +10,8 @@ public class UserView extends Composite {
     private UserInfo userInfo;
     private VerticalPanel mainPanel = new VerticalPanel();
     private FlexTable userLayout = new FlexTable();
+    private HorizontalPanel imageAndInfo = new HorizontalPanel();
+    private Image image = new Image();
     private DecoratorPanel decPanel = new DecoratorPanel();
     private Button write = new Button("write");
 
@@ -18,11 +20,11 @@ public class UserView extends Composite {
 
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
-
+        image.setUrl("data:image/jpg;base64," + userInfo.getImage());
         userLayout.setCellSpacing(6);
         FlexTable.FlexCellFormatter cellFormatter = userLayout.getFlexCellFormatter();
 
-
+        image.setSize(windowWidth/8+"px",windowHeight/4+"px");
 
         userLayout.setHTML(0, 0, userInfo.getName());
         cellFormatter.setColSpan(0, 0, 2);
@@ -53,9 +55,11 @@ public class UserView extends Composite {
         cellFormatter.setColSpan(4, 0, 2);
         cellFormatter.setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-        decPanel.setWidget(userLayout);
+        imageAndInfo.add(image);
+        imageAndInfo.add(userLayout);
+        decPanel.setWidget(imageAndInfo);
 
-        userLayout.setWidth(windowWidth/4+"px");
+        userLayout.setWidth(windowWidth/8+"px");
         userLayout.setHeight(windowHeight/4+"px");
         mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         mainPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);

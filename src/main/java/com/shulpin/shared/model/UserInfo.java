@@ -21,12 +21,15 @@ public class UserInfo {
     private Integer age;
     @Column(name = "city")
     private String city;
+    @Column(name = "image")
+    private byte[] image;
 
-    public UserInfo(String name, String gender, Integer age, String city) {
+    public UserInfo(String name, String gender, Integer age, String city, byte[] image) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.city = city;
+        this.image = image;
     }
 
     public UserInfo() {
@@ -70,6 +73,14 @@ public class UserInfo {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @Override
