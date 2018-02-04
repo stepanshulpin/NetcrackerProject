@@ -41,7 +41,7 @@ public class MessageView extends Composite {
 
                 @Override
                 public void onSuccess(Method method, UserInfo userInfo) {
-                    messageLayout.setHTML(0, 0, "From:" + userInfo.getName());
+                    messageLayout.setHTML(0, 0, "From: " + userInfo.getName());
                 }
             });
         }
@@ -54,7 +54,7 @@ public class MessageView extends Composite {
 
                 @Override
                 public void onSuccess(Method method, UserInfo userInfo) {
-                    messageLayout.setHTML(0, 0, "To:" + userInfo.getName());
+                    messageLayout.setHTML(0, 0, "To: " + userInfo.getName());
                 }
             });
         }

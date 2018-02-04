@@ -2,6 +2,7 @@ package com.shulpin.server.service;
 
 
 import com.shulpin.server.dao.UserInfoDao;
+import com.shulpin.shared.model.Selector;
 import com.shulpin.shared.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfo> findAllUsersWithoutUsername(String username) {
-        return dao.findAllUsersWithoutUsername(username);
+    public List<UserInfo> findAllUsersWithoutUsername(String username, Selector selector) {
+        return dao.findAllUsersWithoutUsername(username, selector);
     }
 
     @Override
@@ -44,5 +45,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo whereNotImage() {
         return dao.whereNotImage();
+    }
+
+    @Override
+    public List<String> getCities() {
+        return dao.getCities();
     }
 }

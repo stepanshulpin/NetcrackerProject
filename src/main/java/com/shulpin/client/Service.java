@@ -1,10 +1,7 @@
 package com.shulpin.client;
 
 
-import com.shulpin.shared.model.Message;
-import com.shulpin.shared.model.MyResponse;
-import com.shulpin.shared.model.User;
-import com.shulpin.shared.model.UserInfo;
+import com.shulpin.shared.model.*;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.RestService;
 import org.hibernate.annotations.GeneratorType;
@@ -39,9 +36,11 @@ public interface Service extends RestService {
     @Consumes(MediaType.APPLICATION_JSON)
     void saveUserInfo(UserInfo userInfo, MethodCallback<MyResponse> callback);
 
-    @GET
+    @POST
     @Path("/users/{username}")
-    void getAllUsersWithoutUsername(@PathParam("username") String username, MethodCallback<List<UserInfo>> callback);
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    void getAllUsersWithoutUsername(@PathParam("username") String username, Selector selector, MethodCallback<List<UserInfo>> callback);
 
     @GET
     @Path("/test")
@@ -66,5 +65,9 @@ public interface Service extends RestService {
     @GET
     @Path("userInfo/{id}")
     void findUserInfoById(@PathParam("id") Long id, MethodCallback<UserInfo> callback);
+
+    @GET
+    @Path("cities")
+    void getCities(MethodCallback<List<String>> callback);
 
 }

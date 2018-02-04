@@ -4,10 +4,7 @@ package com.shulpin.server.controller;
 import com.shulpin.server.service.MessageService;
 import com.shulpin.server.service.UserInfoService;
 import com.shulpin.server.service.UserService;
-import com.shulpin.shared.model.Message;
-import com.shulpin.shared.model.MyResponse;
-import com.shulpin.shared.model.User;
-import com.shulpin.shared.model.UserInfo;
+import com.shulpin.shared.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,10 +90,10 @@ public class BeInService {
 
     }
 
-    @GetMapping("/users/{username}")
+    @PostMapping("/users/{username}")
     @Transactional
-    public ResponseEntity<List<UserInfo>> getAllUsersWithoutUsername(@PathVariable("username") String username){
-        return new ResponseEntity<>(userInfoService.findAllUsersWithoutUsername(username), HttpStatus.OK);
+    public ResponseEntity<List<UserInfo>> getAllUsersWithoutUsername(@PathVariable("username") String username, @RequestBody Selector selector){
+        return new ResponseEntity<>(userInfoService.findAllUsersWithoutUsername(username, selector), HttpStatus.OK);
     }
 
     @PostMapping("/userInfo/{username}")
@@ -152,6 +149,12 @@ public class BeInService {
             e.printStackTrace();
         }
         return new ResponseEntity("Successfully uploaded - ", HttpStatus.OK);
+    }
+
+    @GetMapping("cities")
+    @Transactional
+    public ResponseEntity<List<String>> getCities(){
+        return new ResponseEntity<>(userInfoService.getCities(), HttpStatus.OK);
     }
 
 }

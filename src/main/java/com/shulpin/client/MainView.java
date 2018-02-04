@@ -2,12 +2,15 @@ package com.shulpin.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.shulpin.shared.model.Message;
 import com.shulpin.shared.model.MyResponse;
+import com.shulpin.shared.model.Selector;
 import com.shulpin.shared.model.UserInfo;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -17,6 +20,18 @@ import java.util.Date;
 import java.util.List;
 
 public class MainView implements DialogBoxOpener {
+
+    private Selector selector;
+    private VerticalPanel selectorPanel = new VerticalPanel();
+    private DecoratorPanel decSelectorPanel = new DecoratorPanel();
+    private ListBox sortByListBox = new ListBox();
+    private ListBox genderListBox = new ListBox();
+    private ListBox minAgeListBox = new ListBox();
+    private ListBox maxAgeListBox = new ListBox();
+    private ListBox cityListBox = new ListBox();
+    private Button selectButton = new Button("Select");
+
+    private HorizontalPanel selectorAndUsers = new HorizontalPanel();
 
     private InputDialog dialogBox;
     private TabLayoutPanel mainPanel = new TabLayoutPanel(2.5, Style.Unit.EM);
@@ -48,7 +63,7 @@ public class MainView implements DialogBoxOpener {
         this.login=login;
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
-
+        selector = new Selector("name", "", "", 18, 99);
         service.findUserInfoId(login, new MethodCallback<Long>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
@@ -67,40 +82,40 @@ public class MainView implements DialogBoxOpener {
                     @Override
                     public void onSuccess(Method method, List<Message> messages) {
                         int sizeList =messages.size();
-                        int pages = sizeList/6+1;
-                        if(sizeList<6){
-                            List<Message> messageList=messages.subList(0,sizeList);
-                            addMessagesOnIncomingGrid(messageList);
-                        }
-                        else {
-                            List<Message> messageList = messages.subList(0, 6);
-                            addMessagesOnIncomingGrid(messageList);
-                        }
-                        pagesPanelIncomingMessages.setSpacing(3);
-                        for (int k = 1; k <= pages; k++) {
-                            Button pageButton = new Button(String.valueOf(k));
-                            pageButton.addClickHandler(new ClickHandler() {
-                                @Override
-                                public void onClick(ClickEvent clickEvent) {
-                                    incomingPanel.remove(incomingMessages);
-                                    incomingPanel.remove(pagesPanelIncomingMessages);
-                                    int p =Integer.valueOf(pageButton.getText());
-                                    if(p<pages){
-                                        List<Message> messageList1=messages.subList((p-1)*6,p*6);
-                                        addMessagesOnIncomingGrid(messageList1);
-                                        incomingPanel.add(incomingMessages);
-                                        incomingPanel.add(pagesPanelIncomingMessages);
+                        int pages = (sizeList-1)/6+1;
+                        if(sizeList!=0) {
+                            if (sizeList < 6) {
+                                List<Message> messageList = messages.subList(0, sizeList);
+                                addMessagesOnIncomingGrid(messageList);
+                            } else {
+                                List<Message> messageList = messages.subList(0, 6);
+                                addMessagesOnIncomingGrid(messageList);
+                            }
+                            pagesPanelIncomingMessages.setSpacing(3);
+                            for (int k = 1; k <= pages; k++) {
+                                Button pageButton = new Button(String.valueOf(k));
+                                pageButton.addClickHandler(new ClickHandler() {
+                                    @Override
+                                    public void onClick(ClickEvent clickEvent) {
+                                        incomingPanel.remove(incomingMessages);
+                                        incomingPanel.remove(pagesPanelIncomingMessages);
+                                        int p = Integer.valueOf(pageButton.getText());
+                                        if (p < pages) {
+                                            List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                            addMessagesOnIncomingGrid(messageList1);
+                                            incomingPanel.add(incomingMessages);
+                                            incomingPanel.add(pagesPanelIncomingMessages);
+                                        } else {
+                                            incomingMessages.clear();
+                                            List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                            addMessagesOnIncomingGrid(messageList1);
+                                            incomingPanel.add(incomingMessages);
+                                            incomingPanel.add(pagesPanelIncomingMessages);
+                                        }
                                     }
-                                    else{
-                                        incomingMessages.clear();
-                                        List<Message> messageList1=messages.subList((p-1)*6,sizeList);
-                                        addMessagesOnIncomingGrid(messageList1);
-                                        incomingPanel.add(incomingMessages);
-                                        incomingPanel.add(pagesPanelIncomingMessages);
-                                    }
-                                }
-                            });
-                            pagesPanelIncomingMessages.add(pageButton);
+                                });
+                                pagesPanelIncomingMessages.add(pageButton);
+                            }
                         }
                     }
                 });
@@ -113,40 +128,40 @@ public class MainView implements DialogBoxOpener {
                     @Override
                     public void onSuccess(Method method, List<Message> messages) {
                         int sizeList =messages.size();
-                        int pages = sizeList/6+1;
-                        if(sizeList<6){
-                            List<Message> messageList=messages.subList(0,sizeList);
-                            addMessagesOnOutgoingGrid(messageList);
-                        }
-                        else {
-                            List<Message> messageList = messages.subList(0, 6);
-                            addMessagesOnOutgoingGrid(messageList);
-                        }
-                        pagesPanelOutgoingMessages.setSpacing(3);
-                        for (int k = 1; k <= pages; k++) {
-                            Button pageButton = new Button(String.valueOf(k));
-                            pageButton.addClickHandler(new ClickHandler() {
-                                @Override
-                                public void onClick(ClickEvent clickEvent) {
-                                    outgoingPanel.remove(outgoingMessages);
-                                    outgoingPanel.remove(pagesPanelOutgoingMessages);
-                                    int p =Integer.valueOf(pageButton.getText());
-                                    if(p<pages){
-                                        List<Message> messageList1=messages.subList((p-1)*6,p*6);
-                                        addMessagesOnOutgoingGrid(messageList1);
-                                        outgoingPanel.add(outgoingMessages);
-                                        outgoingPanel.add(pagesPanelOutgoingMessages);
+                        int pages = (sizeList-1)/6+1;
+                        if(sizeList!=0) {
+                            if (sizeList < 6) {
+                                List<Message> messageList = messages.subList(0, sizeList);
+                                addMessagesOnOutgoingGrid(messageList);
+                            } else {
+                                List<Message> messageList = messages.subList(0, 6);
+                                addMessagesOnOutgoingGrid(messageList);
+                            }
+                            pagesPanelOutgoingMessages.setSpacing(3);
+                            for (int k = 1; k <= pages; k++) {
+                                Button pageButton = new Button(String.valueOf(k));
+                                pageButton.addClickHandler(new ClickHandler() {
+                                    @Override
+                                    public void onClick(ClickEvent clickEvent) {
+                                        outgoingPanel.remove(outgoingMessages);
+                                        outgoingPanel.remove(pagesPanelOutgoingMessages);
+                                        int p = Integer.valueOf(pageButton.getText());
+                                        if (p < pages) {
+                                            List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                            addMessagesOnOutgoingGrid(messageList1);
+                                            outgoingPanel.add(outgoingMessages);
+                                            outgoingPanel.add(pagesPanelOutgoingMessages);
+                                        } else {
+                                            outgoingMessages.clear();
+                                            List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                            addMessagesOnOutgoingGrid(messageList1);
+                                            outgoingPanel.add(outgoingMessages);
+                                            outgoingPanel.add(pagesPanelOutgoingMessages);
+                                        }
                                     }
-                                    else{
-                                        outgoingMessages.clear();
-                                        List<Message> messageList1=messages.subList((p-1)*6,sizeList);
-                                        addMessagesOnOutgoingGrid(messageList1);
-                                        outgoingPanel.add(outgoingMessages);
-                                        outgoingPanel.add(pagesPanelOutgoingMessages);
-                                    }
-                                }
-                            });
-                            pagesPanelOutgoingMessages.add(pageButton);
+                                });
+                                pagesPanelOutgoingMessages.add(pageButton);
+                            }
                         }
                     }
                 });
@@ -155,64 +170,7 @@ public class MainView implements DialogBoxOpener {
             }
         });
 
-        service.getAllUsersWithoutUsername(login, new MethodCallback<List<UserInfo>>() {
-            @Override
-            public void onFailure(Method method, Throwable throwable) {
-                Window.alert("Error on load users");
-            }
-
-            @Override
-            public void onSuccess(Method method, List<UserInfo> userInfos) {
-                int sizeList = userInfos.size();
-                int pages = sizeList/9+1;
-                if(sizeList<9){
-                    List<UserInfo> userInfoList=userInfos.subList(0,sizeList);
-                    addUsersOnGrid(userInfoList);
-                }
-                else{
-                    List<UserInfo> userInfoList=userInfos.subList(0,9);
-                    addUsersOnGrid(userInfoList);
-                }
-
-                pagesPanel.setSpacing(3);
-                for(int k = 1; k<=pages; k++){
-                    Button pageButton = new Button(String.valueOf(k));
-                    pageButton.addClickHandler(new ClickHandler() {
-                        @Override
-                        public void onClick(ClickEvent clickEvent) {
-                            gridAndPages.remove(users);
-                            gridAndPages.remove(pagesPanel);
-                            int p =Integer.valueOf(pageButton.getText());
-                            if(p<pages){
-                                List<UserInfo> userInfoList=userInfos.subList((p-1)*9,p*9);
-                                addUsersOnGrid(userInfoList);
-                                gridAndPages.add(users);
-                                gridAndPages.add(pagesPanel);
-                            }
-                            else{
-                                users.clear();
-                                List<UserInfo> userInfoList=userInfos.subList((p-1)*9,sizeList);
-                                addUsersOnGrid(userInfoList);
-                                gridAndPages.add(users);
-                                gridAndPages.add(pagesPanel);
-                            }
-                        }
-                    });
-                    pagesPanel.add(pageButton);
-                }
-                gridAndPages.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-                gridAndPages.add(users);
-                gridAndPages.add(pagesPanel);
-
-                userPanel.setSize("100%","100%");
-                userPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-                userPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-                userPanel.add(gridAndPages);
-
-
-
-            }
-        });
+        usersRequest(0);
 
 
 
@@ -226,7 +184,7 @@ public class MainView implements DialogBoxOpener {
             }
         });
 
-        incomingPanel.setSize("100%","100%");
+        //incomingPanel.setSize("100%","100%");
         incomingPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         incomingPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         reloadPanel.setWidth(windowWidth*0.8+"px");
@@ -250,8 +208,12 @@ public class MainView implements DialogBoxOpener {
 
         incomingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         incomingMessagesVerticalPanel.add(logOutButtonIn);
-        incomingMessagesVerticalPanel.add(incomingPanel);
-        incomingMessagesVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        VerticalPanel incomingWithoutLogout = new VerticalPanel();
+        incomingWithoutLogout.setSize("100%", "100%");
+        incomingWithoutLogout.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        incomingWithoutLogout.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        incomingWithoutLogout.add(incomingPanel);
+        incomingMessagesVerticalPanel.add(incomingWithoutLogout);
         incomingMessagesVerticalPanel.setWidth("100%");
         incomingMessagesVerticalPanel.setHeight("100%");
 
@@ -267,10 +229,102 @@ public class MainView implements DialogBoxOpener {
         messagePanel.add(outgoingMessagesVerticalPanel, "Outgoing");
 
 
+        selectorPanel.add(new Label("Sort by:"));
+        sortByListBox.addItem("name");
+        sortByListBox.addItem("age");
+        sortByListBox.addItem("city");
+        sortByListBox.setWidth("100px");
+        selectorPanel.add(sortByListBox);
+        selectorPanel.add(new Label("Gender:"));
+        genderListBox.addItem("");
+        genderListBox.addItem("Male");
+        genderListBox.addItem("Female");
+        genderListBox.setWidth("100px");
+        selectorPanel.add(genderListBox);
+        cityListBox.addItem("");
+        service.getCities(new MethodCallback<List<String>>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                Window.alert("Error getCities");
+            }
+
+            @Override
+            public void onSuccess(Method method, List<String> strings) {
+                for (String city:strings) {
+                    cityListBox.addItem(city);
+                }
+            }
+        });
+        cityListBox.setWidth("100px");
+        selectorPanel.add(new Label("City:"));
+        selectorPanel.add(cityListBox);
+        for (int i = 18; i < 100; i++) {
+            minAgeListBox.addItem(String.valueOf(i));
+        }
+        minAgeListBox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent changeEvent) {
+                int min = Integer.valueOf(minAgeListBox.getSelectedItemText());
+                maxAgeListBox.clear();
+                for (int i = 99; i >= min; i--) {
+                    maxAgeListBox.addItem(String.valueOf(i));
+                }
+            }
+        });
+        for (int i = 99; i > 17; i--) {
+            maxAgeListBox.addItem(String.valueOf(i));
+        }
+        maxAgeListBox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent changeEvent) {
+                int max = Integer.valueOf(maxAgeListBox.getSelectedItemText());
+                minAgeListBox.clear();
+                for (int i = 18; i <= max; i++) {
+                    minAgeListBox.addItem(String.valueOf(i));
+                }
+            }
+        });
+        selectorPanel.add(new Label("Age:"));
+        HorizontalPanel ageHorizontalPanel = new HorizontalPanel();
+        ageHorizontalPanel.setWidth("100px");
+        ageHorizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        ageHorizontalPanel.add(minAgeListBox);
+        ageHorizontalPanel.add(new Label("-"));
+        ageHorizontalPanel.add(maxAgeListBox);
+        selectorPanel.add(ageHorizontalPanel);
+        selectButton.setWidth("100px");
+        selectorPanel.add(selectButton);
+        decSelectorPanel.add(selectorPanel);
+
+
+        selectButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                selector.setSortBy(sortByListBox.getSelectedItemText());
+                selector.setCity(cityListBox.getSelectedItemText());
+                selector.setGender(genderListBox.getSelectedItemText());
+                selector.setMinAge(Integer.valueOf(minAgeListBox.getSelectedItemText()));
+                selector.setMaxAge(Integer.valueOf(maxAgeListBox.getSelectedItemText()));
+
+                usersRequest(1);
+            }
+        });
+
+
+
+
+        selectorAndUsers.add(decSelectorPanel);
+        selectorAndUsers.add(userPanel);
+
         usersVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         usersVerticalPanel.add(logOutButton);
-        usersVerticalPanel.add(userPanel);
-        usersVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+
+        VerticalPanel usersWithoutLogout = new VerticalPanel();
+        usersWithoutLogout.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        usersWithoutLogout.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        usersWithoutLogout.add(selectorAndUsers);
+        usersWithoutLogout.setSize("100%", "100%");
+        usersVerticalPanel.add(usersWithoutLogout);
         usersVerticalPanel.setWidth("100%");
         usersVerticalPanel.setHeight("100%");
 
@@ -407,46 +461,46 @@ public class MainView implements DialogBoxOpener {
             @Override
             public void onSuccess(Method method, List<Message> messages) {
                 int sizeList =messages.size();
-                int pages = sizeList/6+1;
+                int pages = (sizeList-1)/6+1;
                 incomingMessages.clear();
                 pagesPanelIncomingMessages.clear();
                 incomingPanel.remove(incomingMessages);
                 incomingPanel.remove(pagesPanelIncomingMessages);
-                if(sizeList<6){
-                    List<Message> messageList=messages.subList(0,sizeList);
-                    addMessagesOnIncomingGrid(messageList);
-                }
-                else {
-                    List<Message> messageList = messages.subList(0, 6);
-                    addMessagesOnIncomingGrid(messageList);
-                }
+                if(sizeList!=0) {
+                    if (sizeList < 6) {
+                        List<Message> messageList = messages.subList(0, sizeList);
+                        addMessagesOnIncomingGrid(messageList);
+                    } else {
+                        List<Message> messageList = messages.subList(0, 6);
+                        addMessagesOnIncomingGrid(messageList);
+                    }
 
-                pagesPanelIncomingMessages.setSpacing(3);
-                for (int k = 1; k <= pages; k++) {
-                    Button pageButton = new Button(String.valueOf(k));
-                    pageButton.addClickHandler(new ClickHandler() {
-                        @Override
-                        public void onClick(ClickEvent clickEvent) {
-                            incomingMessages.clear();
-                            incomingPanel.remove(incomingMessages);
-                            incomingPanel.remove(pagesPanelIncomingMessages);
-                            int p =Integer.valueOf(pageButton.getText());
-                            if(p<pages){
-                                List<Message> messageList1=messages.subList((p-1)*6,p*6);
-                                addMessagesOnIncomingGrid(messageList1);
-                                incomingPanel.add(incomingMessages);
-                                incomingPanel.add(pagesPanelIncomingMessages);
-                            }
-                            else{
+                    pagesPanelIncomingMessages.setSpacing(3);
+                    for (int k = 1; k <= pages; k++) {
+                        Button pageButton = new Button(String.valueOf(k));
+                        pageButton.addClickHandler(new ClickHandler() {
+                            @Override
+                            public void onClick(ClickEvent clickEvent) {
                                 incomingMessages.clear();
-                                List<Message> messageList1=messages.subList((p-1)*6,sizeList);
-                                addMessagesOnIncomingGrid(messageList1);
-                                incomingPanel.add(incomingMessages);
-                                incomingPanel.add(pagesPanelIncomingMessages);
+                                incomingPanel.remove(incomingMessages);
+                                incomingPanel.remove(pagesPanelIncomingMessages);
+                                int p = Integer.valueOf(pageButton.getText());
+                                if (p < pages) {
+                                    List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                    addMessagesOnIncomingGrid(messageList1);
+                                    incomingPanel.add(incomingMessages);
+                                    incomingPanel.add(pagesPanelIncomingMessages);
+                                } else {
+                                    incomingMessages.clear();
+                                    List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                    addMessagesOnIncomingGrid(messageList1);
+                                    incomingPanel.add(incomingMessages);
+                                    incomingPanel.add(pagesPanelIncomingMessages);
+                                }
                             }
-                        }
-                    });
-                    pagesPanelIncomingMessages.add(pageButton);
+                        });
+                        pagesPanelIncomingMessages.add(pageButton);
+                    }
                 }
                 incomingPanel.add(incomingMessages);
                 incomingPanel.add(pagesPanelIncomingMessages);
@@ -461,48 +515,117 @@ public class MainView implements DialogBoxOpener {
             @Override
             public void onSuccess(Method method, List<Message> messages) {
                 int sizeList =messages.size();
-                int pages = sizeList/6+1;
+                int pages = (sizeList-1)/6+1;
                 outgoingMessages.clear();
                 pagesPanelOutgoingMessages.clear();
                 outgoingPanel.remove(outgoingMessages);
                 outgoingPanel.remove(pagesPanelOutgoingMessages);
-                if(sizeList<6){
-                    List<Message> messageList=messages.subList(0,sizeList);
-                    addMessagesOnOutgoingGrid(messageList);
-                }
-                else {
-                    List<Message> messageList = messages.subList(0, 6);
-                    addMessagesOnOutgoingGrid(messageList);
-                }
-                pagesPanelOutgoingMessages.setSpacing(3);
-                for (int k = 1; k <= pages; k++) {
-                    Button pageButton = new Button(String.valueOf(k));
-                    pageButton.addClickHandler(new ClickHandler() {
-                        @Override
-                        public void onClick(ClickEvent clickEvent) {
-                            outgoingMessages.clear();
-                            outgoingPanel.remove(outgoingMessages);
-                            outgoingPanel.remove(pagesPanelOutgoingMessages);
-                            int p =Integer.valueOf(pageButton.getText());
-                            if(p<pages){
-                                List<Message> messageList1=messages.subList((p-1)*6,p*6);
-                                addMessagesOnOutgoingGrid(messageList1);
-                                outgoingPanel.add(outgoingMessages);
-                                outgoingPanel.add(pagesPanelOutgoingMessages);
-                            }
-                            else{
+                if(sizeList!=0) {
+                    if (sizeList < 6) {
+                        List<Message> messageList = messages.subList(0, sizeList);
+                        addMessagesOnOutgoingGrid(messageList);
+                    } else {
+                        List<Message> messageList = messages.subList(0, 6);
+                        addMessagesOnOutgoingGrid(messageList);
+                    }
+                    pagesPanelOutgoingMessages.setSpacing(3);
+                    for (int k = 1; k <= pages; k++) {
+                        Button pageButton = new Button(String.valueOf(k));
+                        pageButton.addClickHandler(new ClickHandler() {
+                            @Override
+                            public void onClick(ClickEvent clickEvent) {
                                 outgoingMessages.clear();
-                                List<Message> messageList1=messages.subList((p-1)*6,sizeList);
-                                addMessagesOnOutgoingGrid(messageList1);
-                                outgoingPanel.add(outgoingMessages);
-                                outgoingPanel.add(pagesPanelOutgoingMessages);
+                                outgoingPanel.remove(outgoingMessages);
+                                outgoingPanel.remove(pagesPanelOutgoingMessages);
+                                int p = Integer.valueOf(pageButton.getText());
+                                if (p < pages) {
+                                    List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                    addMessagesOnOutgoingGrid(messageList1);
+                                    outgoingPanel.add(outgoingMessages);
+                                    outgoingPanel.add(pagesPanelOutgoingMessages);
+                                } else {
+                                    outgoingMessages.clear();
+                                    List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                    addMessagesOnOutgoingGrid(messageList1);
+                                    outgoingPanel.add(outgoingMessages);
+                                    outgoingPanel.add(pagesPanelOutgoingMessages);
+                                }
                             }
-                        }
-                    });
-                    pagesPanelOutgoingMessages.add(pageButton);
+                        });
+                        pagesPanelOutgoingMessages.add(pageButton);
+                    }
                 }
                 outgoingPanel.add(outgoingMessages);
                 outgoingPanel.add(pagesPanelOutgoingMessages);
+            }
+        });
+    }
+
+    //type=1 перерисовка после селект
+    private void usersRequest(int type){
+        service.getAllUsersWithoutUsername(login, selector, new MethodCallback<List<UserInfo>>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                Window.alert("Error on load users");
+            }
+
+            @Override
+            public void onSuccess(Method method, List<UserInfo> userInfos) {
+                int sizeList = userInfos.size();
+                int pages = (sizeList-1)/9+1;
+                if(type==1){
+                    gridAndPages.remove(users);
+                    gridAndPages.remove(pagesPanel);
+                    users.clear();
+                    pagesPanel.clear();
+                }
+                if(sizeList!=0) {
+                    if (sizeList < 9) {
+                        List<UserInfo> userInfoList = userInfos.subList(0, sizeList);
+                        addUsersOnGrid(userInfoList);
+                    } else {
+                        List<UserInfo> userInfoList = userInfos.subList(0, 9);
+                        addUsersOnGrid(userInfoList);
+                    }
+
+                    pagesPanel.setSpacing(3);
+                    for (int k = 1; k <= pages; k++) {
+                        Button pageButton = new Button(String.valueOf(k));
+                        pageButton.addClickHandler(new ClickHandler() {
+                            @Override
+                            public void onClick(ClickEvent clickEvent) {
+                                gridAndPages.remove(users);
+                                gridAndPages.remove(pagesPanel);
+                                int p = Integer.valueOf(pageButton.getText());
+                                if (p < pages) {
+                                    users.clear();
+                                    List<UserInfo> userInfoList = userInfos.subList((p - 1) * 9, p * 9);
+                                    addUsersOnGrid(userInfoList);
+                                    gridAndPages.add(users);
+                                    gridAndPages.add(pagesPanel);
+                                } else {
+                                    users.clear();
+                                    List<UserInfo> userInfoList = userInfos.subList((p - 1) * 9, sizeList);
+                                    addUsersOnGrid(userInfoList);
+                                    gridAndPages.add(users);
+                                    gridAndPages.add(pagesPanel);
+                                }
+                            }
+                        });
+                        pagesPanel.add(pageButton);
+                    }
+                    gridAndPages.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+                    gridAndPages.add(users);
+                    gridAndPages.add(pagesPanel);
+
+                    //userPanel.setSize("100%", "100%");
+                    userPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+                    userPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+                    userPanel.add(gridAndPages);
+                }
+
+
+
             }
         });
     }

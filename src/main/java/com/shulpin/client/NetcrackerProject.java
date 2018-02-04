@@ -139,42 +139,61 @@ public class NetcrackerProject implements EntryPoint {
                                                 validationRegistration(3,"Enter the name of the city!");
                                             }
                                             else{
-                                                service.saveUser(new User(login, password), new MethodCallback<MyResponse>() {
-                                                    @Override
-                                                    public void onFailure(Method method, Throwable throwable) {
-                                                        Window.alert("Error save user!");
+
+                                                if(registrationView.getLoadImage().getFilename().length()==0){
+                                                    validationRegistration(4, "No File Specified!");
+                                                }
+                                                else{
+                                                    String extension="";
+                                                    String fileName = registrationView.getLoadImage().getFilename();
+                                                    if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+                                                        extension = fileName.substring(fileName.lastIndexOf(".") + 1);
                                                     }
+                                                    if(extension.equals("png")||extension.equals("jpg")||extension.equals("bmp")){
+                                                        service.saveUser(new User(login, password), new MethodCallback<MyResponse>() {
+                                                            @Override
+                                                            public void onFailure(Method method, Throwable throwable) {
+                                                                Window.alert("Error save user!");
+                                                            }
 
-                                                    @Override
-                                                    public void onSuccess(Method method, MyResponse myResponse) {
-                                                        if(myResponse.getResponse().equals("Save user completed")) {
-                                                            service.saveUserInfo(new UserInfo(login, gender, age, city, null), new MethodCallback<MyResponse>() {
-                                                                @Override
-                                                                public void onFailure(Method method, Throwable throwable) {
-                                                                    Window.alert("Error save userInfo!");
-                                                                }
+                                                            @Override
+                                                            public void onSuccess(Method method, MyResponse myResponse) {
+                                                                if(myResponse.getResponse().equals("Save user completed")) {
+                                                                    service.saveUserInfo(new UserInfo(login, gender, age, city, null), new MethodCallback<MyResponse>() {
+                                                                        @Override
+                                                                        public void onFailure(Method method, Throwable throwable) {
+                                                                            Window.alert("Error save userInfo!");
+                                                                        }
 
-                                                                @Override
-                                                                public void onSuccess(Method method, MyResponse myResponse) {
-                                                                    if(myResponse.getResponse().equals("Save userInfo completed")) {
-                                                                        registrationView.getLoadFile().submit();
-                                                                        registrationView.getLoadFile().addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
-                                                                            @Override
-                                                                            public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                                                                                Window.alert("Account created");
-                                                                                RootPanel.get("content").remove(registrationView.getMainPanel());
-                                                                                RootPanel.get("content").add(loginView.getMainPanel());
+                                                                        @Override
+                                                                        public void onSuccess(Method method, MyResponse myResponse) {
+                                                                            if(myResponse.getResponse().equals("Save userInfo completed")) {
+                                                                                registrationView.getLoadFile().submit();
+                                                                                registrationView.getLoadFile().addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+                                                                                    @Override
+                                                                                    public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
+                                                                                        Window.alert("Account created");
+                                                                                        RootPanel.get("content").remove(registrationView.getMainPanel());
+                                                                                        RootPanel.get("content").add(loginView.getMainPanel());
+                                                                                    }
+                                                                                });
                                                                             }
-                                                                        });
-                                                                    }
+                                                                        }
+                                                                    });
+
+
+
                                                                 }
-                                                            });
-
-
-
-                                                        }
+                                                            }
+                                                        });
                                                     }
-                                                });
+                                                    else{
+                                                        validationRegistration(4,"You must select the image!");
+                                                    }
+                                                }
+
+
+
                                             }
                                         }
                                         else{
@@ -226,11 +245,13 @@ public class NetcrackerProject implements EntryPoint {
         //textBox==1 password
         //textBox==2 confirmPassword
         //textBox==3 city
+        //textBox==4 fileUpload
         //textBox==-1 valid
         registrationView.getUsername().removeStyleName("redOutline");
         registrationView.getPassword().removeStyleName("redOutline");
         registrationView.getPasswordConfirm().removeStyleName("redOutline");
         registrationView.getCity().removeStyleName("redOutline");
+        registrationView.getLoadImage().removeStyleName("redOutline");
 
         if(textBox==0){
             registrationView.getUsername().addStyleName("redOutline");
@@ -243,6 +264,9 @@ public class NetcrackerProject implements EntryPoint {
         }
         if(textBox==3){
             registrationView.getCity().addStyleName("redOutline");
+        }
+        if(textBox==4){
+            registrationView.getLoadImage().addStyleName("redOutline");
         }
         registrationView.getValidLabel().setText(msg);
 

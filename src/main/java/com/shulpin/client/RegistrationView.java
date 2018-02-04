@@ -159,4 +159,8 @@ public class RegistrationView extends Composite {
     public FormPanel getLoadFile() {
         return loadFile;
     }
+
+    public FileUpload getLoadImage() {
+        return loadImage;
+    }
 }

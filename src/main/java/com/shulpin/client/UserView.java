@@ -1,6 +1,7 @@
 package com.shulpin.client;
 
 
+import com.github.nmorel.gwtjackson.client.utils.Base64Utils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.shulpin.shared.model.UserInfo;
@@ -10,6 +11,7 @@ public class UserView extends Composite {
     private UserInfo userInfo;
     private VerticalPanel mainPanel = new VerticalPanel();
     private FlexTable userLayout = new FlexTable();
+    private HorizontalPanel imagePanel = new HorizontalPanel();
     private HorizontalPanel imageAndInfo = new HorizontalPanel();
     private Image image = new Image();
     private DecoratorPanel decPanel = new DecoratorPanel();
@@ -20,11 +22,15 @@ public class UserView extends Composite {
 
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
-        image.setUrl("data:image/jpg;base64," + userInfo.getImage());
+        String base64 = Base64Utils.toBase64(userInfo.getImage());
+        image.setUrl("data:image/png;base64," + base64);
         userLayout.setCellSpacing(6);
         FlexTable.FlexCellFormatter cellFormatter = userLayout.getFlexCellFormatter();
 
-        image.setSize(windowWidth/8+"px",windowHeight/4+"px");
+        int imgHeight = image.getHeight();
+        int imgWidth = image.getWidth();
+        double scale = Math.min((double) (windowWidth/8)/(double) imgWidth,(double) (windowHeight/4)/(double) imgHeight);
+        image.setSize(imgWidth*scale+"px",imgHeight*scale+"px");
 
         userLayout.setHTML(0, 0, userInfo.getName());
         cellFormatter.setColSpan(0, 0, 2);
@@ -55,7 +61,13 @@ public class UserView extends Composite {
         cellFormatter.setColSpan(4, 0, 2);
         cellFormatter.setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-        imageAndInfo.add(image);
+        imagePanel.setSize(windowWidth/8+"px",windowHeight/4+"px");
+        imagePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        imagePanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        imagePanel.add(image);
+
+
+        imageAndInfo.add(imagePanel);
         imageAndInfo.add(userLayout);
         decPanel.setWidget(imageAndInfo);
 

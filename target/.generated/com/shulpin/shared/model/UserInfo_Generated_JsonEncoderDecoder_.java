@@ -15,6 +15,7 @@ public class UserInfo_Generated_JsonEncoderDecoder_ extends org.fusesource.resty
     isNotNullValuePut(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.STRING.encode(parseValue.getGender()), rc, "gender");
     isNotNullValuePut(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.INT.encode(parseValue.getAge()), rc, "age");
     isNotNullValuePut(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.STRING.encode(parseValue.getCity()), rc, "city");
+    isNotNullValuePut(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.toJSON(parseValue.getImage(), org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.BYTE), rc, "image");
     return rc;
   }
   
@@ -29,6 +30,7 @@ public class UserInfo_Generated_JsonEncoderDecoder_ extends org.fusesource.resty
     rc.setGender(getValueToSet(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.STRING.decode(object.get("gender")), null));
     rc.setAge(getValueToSet(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.INT.decode(object.get("age")), null));
     rc.setCity(getValueToSet(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.STRING.decode(object.get("city")), null));
+    rc.setImage(getValueToSet(org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.toArray(object.get("image"), org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.BYTE), null));
     return rc;
   }
   
