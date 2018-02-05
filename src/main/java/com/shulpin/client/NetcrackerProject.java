@@ -172,7 +172,7 @@ public class NetcrackerProject implements EntryPoint {
                                                                                 registrationView.getLoadFile().addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
                                                                                     @Override
                                                                                     public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-                                                                                        Window.alert("Account created");
+                                                                                        //Window.alert("Account created");
                                                                                         RootPanel.get("content").remove(registrationView.getMainPanel());
                                                                                         RootPanel.get("content").add(loginView.getMainPanel());
                                                                                     }
