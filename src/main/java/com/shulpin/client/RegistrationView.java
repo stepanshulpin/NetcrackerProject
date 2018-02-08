@@ -1,5 +1,6 @@
 package com.shulpin.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.server.testing.Gender;
@@ -41,7 +42,7 @@ public class RegistrationView extends Composite {
 
         validLabel.setStyleName("redText");
 
-        loadFile.setAction("/NetcrackerProject/bein/loadFile");
+        loadFile.setAction("/NetcrackerProject-1.0-SNAPSHOT/NetcrackerProject/bein/loadFile");
         // set form to use the POST method, and multipart MIME encoding.
         loadFile.setEncoding(FormPanel.ENCODING_MULTIPART);
         loadFile.setMethod(FormPanel.METHOD_POST);
