@@ -40,6 +40,8 @@ public class RegistrationView extends Composite {
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
 
+        mainPanel.setStyleName("container");
+        decPanel.setStyleName("decPanel");
         validLabel.setStyleName("redText");
 
         loadFile.setAction("/NetcrackerProject-1.0-SNAPSHOT/NetcrackerProject/bein/loadFile");
@@ -51,50 +53,78 @@ public class RegistrationView extends Composite {
         FlexTable.FlexCellFormatter cellFormatter = registrationLayout.getFlexCellFormatter();
 
         registrationLayout.setHTML(0, 0, this.headline);
+        cellFormatter.setStyleName(0,0,"header");
         cellFormatter.setColSpan(0, 0, 2);
         cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-        username.setWidth("150px");
-        password.setWidth("150px");
-        passwordConfirm.setWidth("150px");
-        city.setWidth("150px");
+        username.setWidth(windowWidth/4+"px");
+        password.setWidth(windowWidth/4+"px");
+        passwordConfirm.setWidth(windowWidth/4+"px");
+        city.setWidth(windowWidth/4+"px");
+        gender.setWidth(windowWidth/4+"px");
+        age.setWidth(windowWidth/4+"px");
 
         registrationLayout.setHTML(1, 0, this.usernameLabel);
+        username.removeStyleName("gwt-TextBox");
+        username.setStyleName("textBox");
         registrationLayout.setWidget(1, 1, username);
         registrationLayout.setHTML(2, 0, passwordLabel);
+        password.removeStyleName("gwt-PasswordTextBox");
+        password.setStyleName("passwordBox");
         registrationLayout.setWidget(2, 1, password);
         registrationLayout.setHTML(3, 0, passwordConfirmLabel);
+        passwordConfirm.removeStyleName("gwt-PasswordTextBox");
+        passwordConfirm.setStyleName("passwordBox");
         registrationLayout.setWidget(3, 1, passwordConfirm);
 
         registrationLayout.setHTML(4, 0, this.headlinePersonalInformation);
+        cellFormatter.setStyleName(4,0,"headerSmall");
         cellFormatter.setColSpan(4, 0, 2);
         cellFormatter.setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
         gender.addItem("Female");
         gender.addItem("Male");
+        gender.removeStyleName("gwt-ListBox");
+        gender.setStyleName("listBox");
         registrationLayout.setHTML(5,0,genderLabel);
         registrationLayout.setWidget(5,1,gender);
 
         for(int i=18; i<100; i++)
             age.addItem(String.valueOf(i));
+        age.removeStyleName("gwt-ListBox");
+        age.setStyleName("listBox");
         registrationLayout.setHTML(6,0,ageLabel);
         registrationLayout.setWidget(6,1,age);
 
         registrationLayout.setHTML(7,0,cityLabel);
+        city.removeStyleName("gwt-TextBox");
+        city.setStyleName("smallTextBox");
         registrationLayout.setWidget(7,1,city);
 
-        loadImage.setWidth("150px");
-        loadFile.add(loadImage);
+        loadImage.setWidth(windowWidth/4+"px");
+
+        VerticalPanel upload = new VerticalPanel();
+        upload.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        Label uploadLabel = new Label("Upload");
+        uploadLabel.setWidth("100%");
+        upload.add(uploadLabel);
+        upload.add(loadImage);
+        loadFile.add(upload);
+        upload.setStyleName("file_upload");
+        //loadImage.removeStyleName("gwt-FileUpload");
         registrationLayout.setHTML(8,0,imageLabel);
         registrationLayout.setWidget(8,1,loadFile);
 
-        okButton.setWidth("75px");
 
+        okButton.removeStyleName("gwt-Button");
+        okButton.addStyleName("loginButton");
         registrationLayout.setWidget(9, 0, okButton);
         cellFormatter.setColSpan(9, 0, 2);
         cellFormatter.setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-        backButton.setWidth("75px");
+
+        backButton.removeStyleName("gwt-Button");
+        backButton.addStyleName("loginButton");
         registrationLayout.setWidget(10, 0, backButton);
         cellFormatter.setColSpan(10, 0, 2);
         cellFormatter.setHorizontalAlignment(10, 0, HasHorizontalAlignment.ALIGN_CENTER);

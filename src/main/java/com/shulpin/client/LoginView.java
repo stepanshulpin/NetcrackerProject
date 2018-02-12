@@ -28,26 +28,37 @@ public class LoginView extends Composite{
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
 
+        mainPanel.setStyleName("container");
+        decPanel.setStyleName("decPanel");
         validLabel.setStyleName("redText");
 
         loginLayout.setCellSpacing(6);
         FlexCellFormatter cellFormatter = loginLayout.getFlexCellFormatter();
 
-        loginLayout.setHTML(0, 0, this.headline);
+        loginLayout.setHTML(0, 0, headline);
+        cellFormatter.setStyleName(0,0,"header");
         cellFormatter.setColSpan(0, 0, 2);
         cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-        username.setWidth("150px");
-        password.setWidth("150px");
-        loginLayout.setHTML(1, 0, this.usernameLabel);
+        username.setWidth(windowWidth/4+"px");
+        password.setWidth(windowWidth/4+"px");
+        loginLayout.setHTML(1, 0, usernameLabel);
+        username.removeStyleName("gwt-TextBox");
+        username.setStyleName("textBox");
         loginLayout.setWidget(1, 1, username);
         loginLayout.setHTML(2, 0, passwordLabel);
+        password.removeStyleName("gwt-PasswordTextBox");
+        password.setStyleName("passwordBox");
         loginLayout.setWidget(2, 1, password);
 
 
+        loginButton.removeStyleName("gwt-Button");
+        loginButton.addStyleName("loginButton");
         loginLayout.setWidget(3, 0, loginButton);
         cellFormatter.setColSpan(3, 0, 2);
         cellFormatter.setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER);
+        registrationButton.removeStyleName("gwt-Button");
+        registrationButton.addStyleName("loginButton");
         loginLayout.setWidget(4, 0, registrationButton);
         cellFormatter.setColSpan(4, 0, 2);
         cellFormatter.setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);

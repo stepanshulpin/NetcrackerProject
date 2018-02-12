@@ -15,8 +15,8 @@ public class MessageView extends Composite {
     private FlexTable messageLayout = new FlexTable();
     private HorizontalPanel buttons = new HorizontalPanel();
     private DecoratorPanel decPanel = new DecoratorPanel();
-    private Button write = new Button("write");
-    private Button delete = new Button("delete");
+    private Button write = new Button("Write");
+    private Button delete = new Button("Delete");
     private Message message;
 
     private Service service = GWT.create(Service.class);
@@ -26,7 +26,10 @@ public class MessageView extends Composite {
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
 
-
+        delete.removeStyleName("gwt-Button");
+        delete.addStyleName("messageButton");
+        write.removeStyleName("gwt-Button");
+        write.addStyleName("messageButton");
         this.message = message;
 
         messageLayout.setCellSpacing(6);
@@ -63,16 +66,19 @@ public class MessageView extends Composite {
         cellFormatter.setHorizontalAlignment(0,1,HasHorizontalAlignment.ALIGN_RIGHT);
 
         messageLayout.setHTML(1,0,message.getContent());
+        cellFormatter.setStyleName(1,0,"messageContent");
         cellFormatter.setColSpan(1,0,2);
         cellFormatter.setHorizontalAlignment(1,0,HasHorizontalAlignment.ALIGN_LEFT);
 
-        buttons.setSpacing(5);
+        buttons.setSpacing(0);
         if(type==1) {
             buttons.add(write);
         }
         buttons.add(delete);
         messageLayout.setWidget(2,0,buttons);
         cellFormatter.setColSpan(2,0,2);
+        decPanel.removeStyleName("gwt-DecoratorPanel");
+        decPanel.addStyleName("messagePanel");
         decPanel.setWidget(messageLayout);
         messageLayout.setWidth(windowWidth*0.8+"px");
         mainPanel.add(decPanel);

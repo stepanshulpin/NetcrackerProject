@@ -36,7 +36,7 @@ public class MainView implements DialogBoxOpener {
     private InputDialog dialogBox;
     private TabLayoutPanel mainPanel = new TabLayoutPanel(2.5, Style.Unit.EM);
     private VerticalPanel userPanel = new VerticalPanel();
-    private TabLayoutPanel messagePanel = new TabLayoutPanel(2.0, Style.Unit.EM);
+    private TabLayoutPanel messagePanel = new TabLayoutPanel(2.5, Style.Unit.EM);
     private VerticalPanel incomingPanel = new VerticalPanel();
     private VerticalPanel outgoingPanel = new VerticalPanel();
     private VerticalPanel gridAndPages = new VerticalPanel();
@@ -44,8 +44,8 @@ public class MainView implements DialogBoxOpener {
     private HorizontalPanel pagesPanelIncomingMessages = new HorizontalPanel();
     private HorizontalPanel pagesPanelOutgoingMessages = new HorizontalPanel();
     private Grid users = new Grid(3,3);
-    private Grid incomingMessages = new Grid(6,1);
-    private Grid outgoingMessages = new Grid(6,1);
+    private Grid incomingMessages = new Grid(5,1);
+    private Grid outgoingMessages = new Grid(5,1);
     private Service service = GWT.create(Service.class);
     private Long messageTo=null;
     private Long messageFrom=null;
@@ -58,6 +58,9 @@ public class MainView implements DialogBoxOpener {
     private Button logOutButtonIn = new Button("LogOut");
     private Button logOutButtonOut = new Button("LogOut");
     private String login;
+
+    private int min;
+    private int max;
 
     public MainView(String login) {
         this.login=login;
@@ -82,18 +85,20 @@ public class MainView implements DialogBoxOpener {
                     @Override
                     public void onSuccess(Method method, List<Message> messages) {
                         int sizeList =messages.size();
-                        int pages = (sizeList-1)/6+1;
+                        int pages = (sizeList-1)/5+1;
                         if(sizeList!=0) {
-                            if (sizeList < 6) {
+                            if (sizeList < 5) {
                                 List<Message> messageList = messages.subList(0, sizeList);
                                 addMessagesOnIncomingGrid(messageList);
                             } else {
-                                List<Message> messageList = messages.subList(0, 6);
+                                List<Message> messageList = messages.subList(0, 5);
                                 addMessagesOnIncomingGrid(messageList);
                             }
                             pagesPanelIncomingMessages.setSpacing(3);
                             for (int k = 1; k <= pages; k++) {
                                 Button pageButton = new Button(String.valueOf(k));
+                                pageButton.removeStyleName("gwt-Button");
+                                pageButton.addStyleName("pageButton");
                                 pageButton.addClickHandler(new ClickHandler() {
                                     @Override
                                     public void onClick(ClickEvent clickEvent) {
@@ -101,13 +106,13 @@ public class MainView implements DialogBoxOpener {
                                         incomingPanel.remove(pagesPanelIncomingMessages);
                                         int p = Integer.valueOf(pageButton.getText());
                                         if (p < pages) {
-                                            List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                            List<Message> messageList1 = messages.subList((p - 1) * 5, p * 5);
                                             addMessagesOnIncomingGrid(messageList1);
                                             incomingPanel.add(incomingMessages);
                                             incomingPanel.add(pagesPanelIncomingMessages);
                                         } else {
                                             incomingMessages.clear();
-                                            List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                            List<Message> messageList1 = messages.subList((p - 1) * 5, sizeList);
                                             addMessagesOnIncomingGrid(messageList1);
                                             incomingPanel.add(incomingMessages);
                                             incomingPanel.add(pagesPanelIncomingMessages);
@@ -128,18 +133,20 @@ public class MainView implements DialogBoxOpener {
                     @Override
                     public void onSuccess(Method method, List<Message> messages) {
                         int sizeList =messages.size();
-                        int pages = (sizeList-1)/6+1;
+                        int pages = (sizeList-1)/5+1;
                         if(sizeList!=0) {
-                            if (sizeList < 6) {
+                            if (sizeList < 5) {
                                 List<Message> messageList = messages.subList(0, sizeList);
                                 addMessagesOnOutgoingGrid(messageList);
                             } else {
-                                List<Message> messageList = messages.subList(0, 6);
+                                List<Message> messageList = messages.subList(0, 5);
                                 addMessagesOnOutgoingGrid(messageList);
                             }
                             pagesPanelOutgoingMessages.setSpacing(3);
                             for (int k = 1; k <= pages; k++) {
                                 Button pageButton = new Button(String.valueOf(k));
+                                pageButton.removeStyleName("gwt-Button");
+                                pageButton.addStyleName("pageButton");
                                 pageButton.addClickHandler(new ClickHandler() {
                                     @Override
                                     public void onClick(ClickEvent clickEvent) {
@@ -147,13 +154,13 @@ public class MainView implements DialogBoxOpener {
                                         outgoingPanel.remove(pagesPanelOutgoingMessages);
                                         int p = Integer.valueOf(pageButton.getText());
                                         if (p < pages) {
-                                            List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                            List<Message> messageList1 = messages.subList((p - 1) * 5, p * 5);
                                             addMessagesOnOutgoingGrid(messageList1);
                                             outgoingPanel.add(outgoingMessages);
                                             outgoingPanel.add(pagesPanelOutgoingMessages);
                                         } else {
                                             outgoingMessages.clear();
-                                            List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                            List<Message> messageList1 = messages.subList((p - 1) * 5, sizeList);
                                             addMessagesOnOutgoingGrid(messageList1);
                                             outgoingPanel.add(outgoingMessages);
                                             outgoingPanel.add(pagesPanelOutgoingMessages);
@@ -174,7 +181,17 @@ public class MainView implements DialogBoxOpener {
 
 
 
-
+        users.addStyleName("usersPanel");
+        incomingMessages.addStyleName("usersPanel");
+        outgoingMessages.addStyleName("usersPanel");
+        logOutButton.removeStyleName("gwt-Button");
+        logOutButton.addStyleName("logoutButton");
+        logOutButtonIn.removeStyleName("gwt-Button");
+        logOutButtonIn.addStyleName("logoutButton");
+        logOutButtonOut.removeStyleName("gwt-Button");
+        logOutButtonOut.addStyleName("logoutButton");
+        reload.removeStyleName("gwt-Button");
+        reload.addStyleName("reloadButton");
 
 
         reload.addClickHandler(new ClickHandler() {
@@ -233,13 +250,17 @@ public class MainView implements DialogBoxOpener {
         sortByListBox.addItem("name");
         sortByListBox.addItem("age");
         sortByListBox.addItem("city");
-        sortByListBox.setWidth("100px");
+        sortByListBox.setWidth(windowWidth/10+"px");
+        sortByListBox.removeStyleName("gwt-ListBox");
+        sortByListBox.addStyleName("listBox");
         selectorPanel.add(sortByListBox);
         selectorPanel.add(new Label("Gender:"));
         genderListBox.addItem("");
         genderListBox.addItem("Male");
         genderListBox.addItem("Female");
-        genderListBox.setWidth("100px");
+        genderListBox.setWidth(windowWidth/10+"px");
+        genderListBox.removeStyleName("gwt-ListBox");
+        genderListBox.addStyleName("listBox");
         selectorPanel.add(genderListBox);
         cityListBox.addItem("");
         service.getCities(new MethodCallback<List<String>>() {
@@ -255,47 +276,66 @@ public class MainView implements DialogBoxOpener {
                 }
             }
         });
-        cityListBox.setWidth("100px");
+        cityListBox.setWidth(windowWidth/10+"px");
+        cityListBox.removeStyleName("gwt-ListBox");
+        cityListBox.addStyleName("listBox");
         selectorPanel.add(new Label("City:"));
         selectorPanel.add(cityListBox);
+        /*int min=18;
+        int max=100;*/
         for (int i = 18; i < 100; i++) {
             minAgeListBox.addItem(String.valueOf(i));
         }
+        min=18;
+        max=99;
         minAgeListBox.addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent changeEvent) {
-                int min = Integer.valueOf(minAgeListBox.getSelectedItemText());
+                min = Integer.valueOf(minAgeListBox.getSelectedItemText());
                 maxAgeListBox.clear();
                 for (int i = 99; i >= min; i--) {
                     maxAgeListBox.addItem(String.valueOf(i));
+                    maxAgeListBox.setSelectedIndex(99-max);
                 }
             }
         });
+        minAgeListBox.removeStyleName("gwt-ListBox");
+        minAgeListBox.addStyleName("listBox");
         for (int i = 99; i > 17; i--) {
             maxAgeListBox.addItem(String.valueOf(i));
         }
         maxAgeListBox.addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent changeEvent) {
-                int max = Integer.valueOf(maxAgeListBox.getSelectedItemText());
+                max = Integer.valueOf(maxAgeListBox.getSelectedItemText());
                 minAgeListBox.clear();
                 for (int i = 18; i <= max; i++) {
                     minAgeListBox.addItem(String.valueOf(i));
+                    minAgeListBox.setSelectedIndex(min-18);
                 }
             }
         });
+        maxAgeListBox.removeStyleName("gwt-ListBox");
+        maxAgeListBox.addStyleName("listBox");
         selectorPanel.add(new Label("Age:"));
         HorizontalPanel ageHorizontalPanel = new HorizontalPanel();
-        ageHorizontalPanel.setWidth("100px");
+        ageHorizontalPanel.setWidth(windowWidth/10+"px");
+        ageHorizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         ageHorizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         ageHorizontalPanel.add(minAgeListBox);
-        ageHorizontalPanel.add(new Label("-"));
+        Label dash = new Label("  -  ");
+        dash.addStyleName("dash");
+        ageHorizontalPanel.add(dash);
         ageHorizontalPanel.add(maxAgeListBox);
         selectorPanel.add(ageHorizontalPanel);
-        selectButton.setWidth("100px");
+        selectButton.setWidth(windowWidth/10+"px");
+        selectButton.removeStyleName("gwt-Button");
+        selectButton.addStyleName("selectButton");
         selectorPanel.add(selectButton);
-        decSelectorPanel.add(selectorPanel);
 
+        decSelectorPanel.add(selectorPanel);
+        decSelectorPanel.removeStyleName("gwt-DecoratorPanel");
+        decSelectorPanel.addStyleName("selectorPanel");
 
         selectButton.addClickHandler(new ClickHandler() {
             @Override
@@ -359,7 +399,9 @@ public class MainView implements DialogBoxOpener {
             });
             outgoingMessages.setWidget(i,0,messageView.getMainPanel());
             i++;
+
         }
+
 
 
     }
@@ -461,23 +503,25 @@ public class MainView implements DialogBoxOpener {
             @Override
             public void onSuccess(Method method, List<Message> messages) {
                 int sizeList =messages.size();
-                int pages = (sizeList-1)/6+1;
+                int pages = (sizeList-1)/5+1;
                 incomingMessages.clear();
                 pagesPanelIncomingMessages.clear();
                 incomingPanel.remove(incomingMessages);
                 incomingPanel.remove(pagesPanelIncomingMessages);
                 if(sizeList!=0) {
-                    if (sizeList < 6) {
+                    if (sizeList < 5) {
                         List<Message> messageList = messages.subList(0, sizeList);
                         addMessagesOnIncomingGrid(messageList);
                     } else {
-                        List<Message> messageList = messages.subList(0, 6);
+                        List<Message> messageList = messages.subList(0, 5);
                         addMessagesOnIncomingGrid(messageList);
                     }
 
                     pagesPanelIncomingMessages.setSpacing(3);
                     for (int k = 1; k <= pages; k++) {
                         Button pageButton = new Button(String.valueOf(k));
+                        pageButton.removeStyleName("gwt-Button");
+                        pageButton.addStyleName("pageButton");
                         pageButton.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent clickEvent) {
@@ -486,13 +530,13 @@ public class MainView implements DialogBoxOpener {
                                 incomingPanel.remove(pagesPanelIncomingMessages);
                                 int p = Integer.valueOf(pageButton.getText());
                                 if (p < pages) {
-                                    List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                    List<Message> messageList1 = messages.subList((p - 1) * 5, p * 5);
                                     addMessagesOnIncomingGrid(messageList1);
                                     incomingPanel.add(incomingMessages);
                                     incomingPanel.add(pagesPanelIncomingMessages);
                                 } else {
                                     incomingMessages.clear();
-                                    List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                    List<Message> messageList1 = messages.subList((p - 1) * 5, sizeList);
                                     addMessagesOnIncomingGrid(messageList1);
                                     incomingPanel.add(incomingMessages);
                                     incomingPanel.add(pagesPanelIncomingMessages);
@@ -515,22 +559,24 @@ public class MainView implements DialogBoxOpener {
             @Override
             public void onSuccess(Method method, List<Message> messages) {
                 int sizeList =messages.size();
-                int pages = (sizeList-1)/6+1;
+                int pages = (sizeList-1)/5+1;
                 outgoingMessages.clear();
                 pagesPanelOutgoingMessages.clear();
                 outgoingPanel.remove(outgoingMessages);
                 outgoingPanel.remove(pagesPanelOutgoingMessages);
                 if(sizeList!=0) {
-                    if (sizeList < 6) {
+                    if (sizeList < 5) {
                         List<Message> messageList = messages.subList(0, sizeList);
                         addMessagesOnOutgoingGrid(messageList);
                     } else {
-                        List<Message> messageList = messages.subList(0, 6);
+                        List<Message> messageList = messages.subList(0, 5);
                         addMessagesOnOutgoingGrid(messageList);
                     }
                     pagesPanelOutgoingMessages.setSpacing(3);
                     for (int k = 1; k <= pages; k++) {
                         Button pageButton = new Button(String.valueOf(k));
+                        pageButton.removeStyleName("gwt-Button");
+                        pageButton.addStyleName("pageButton");
                         pageButton.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent clickEvent) {
@@ -539,13 +585,13 @@ public class MainView implements DialogBoxOpener {
                                 outgoingPanel.remove(pagesPanelOutgoingMessages);
                                 int p = Integer.valueOf(pageButton.getText());
                                 if (p < pages) {
-                                    List<Message> messageList1 = messages.subList((p - 1) * 6, p * 6);
+                                    List<Message> messageList1 = messages.subList((p - 1) * 5, p * 5);
                                     addMessagesOnOutgoingGrid(messageList1);
                                     outgoingPanel.add(outgoingMessages);
                                     outgoingPanel.add(pagesPanelOutgoingMessages);
                                 } else {
                                     outgoingMessages.clear();
-                                    List<Message> messageList1 = messages.subList((p - 1) * 6, sizeList);
+                                    List<Message> messageList1 = messages.subList((p - 1) * 5, sizeList);
                                     addMessagesOnOutgoingGrid(messageList1);
                                     outgoingPanel.add(outgoingMessages);
                                     outgoingPanel.add(pagesPanelOutgoingMessages);
@@ -591,6 +637,8 @@ public class MainView implements DialogBoxOpener {
                     pagesPanel.setSpacing(3);
                     for (int k = 1; k <= pages; k++) {
                         Button pageButton = new Button(String.valueOf(k));
+                        pageButton.removeStyleName("gwt-Button");
+                        pageButton.addStyleName("pageButton");
                         pageButton.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent clickEvent) {

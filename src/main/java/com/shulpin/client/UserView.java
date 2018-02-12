@@ -2,6 +2,8 @@ package com.shulpin.client;
 
 
 import com.github.nmorel.gwtjackson.client.utils.Base64Utils;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.shulpin.shared.model.UserInfo;
@@ -15,11 +17,15 @@ public class UserView extends Composite {
     private HorizontalPanel imageAndInfo = new HorizontalPanel();
     private Image image = new Image();
     private DecoratorPanel decPanel = new DecoratorPanel();
-    private Button write = new Button("write");
+    private Button write = new Button("Write");
 
     public UserView(UserInfo userInfo) {
         this.userInfo = userInfo;
-
+        userLayout.addStyleName("userInfoPanel");
+        imageAndInfo.addStyleName("imageAndInfoPanel");
+        image.addStyleName("image");
+        write.removeStyleName("gwt-Button");
+        write.addStyleName("writeButton");
         int windowHeight = Window.getClientHeight();
         int windowWidth = Window.getClientWidth();
         String base64 = Base64Utils.toBase64(userInfo.getImage());
@@ -27,12 +33,9 @@ public class UserView extends Composite {
         userLayout.setCellSpacing(6);
         FlexTable.FlexCellFormatter cellFormatter = userLayout.getFlexCellFormatter();
 
-        int imgHeight = image.getHeight();
-        int imgWidth = image.getWidth();
-        double scale = Math.min((double) (windowWidth/8)/(double) imgWidth,(double) (windowHeight/4)/(double) imgHeight);
-        image.setSize(imgWidth*scale+"px",imgHeight*scale+"px");
 
         userLayout.setHTML(0, 0, userInfo.getName());
+        cellFormatter.addStyleName(0,0,"username");
         cellFormatter.setColSpan(0, 0, 2);
         cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
@@ -64,18 +67,37 @@ public class UserView extends Composite {
         imagePanel.setSize(windowWidth/8+"px",windowHeight/4+"px");
         imagePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         imagePanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+
+
+        /*while (imgHeight==0||imgWidth==0) {
+            imgHeight = image.getOffsetHeight();
+            imgWidth = image.getOffsetWidth();
+        }*/
+        image.addLoadHandler(new LoadHandler() {
+            @Override
+            public void onLoad(LoadEvent loadEvent) {
+                double imgHeight = image.getOffsetHeight();
+                double imgWidth = image.getOffsetWidth();
+                double widthDiv8 = windowWidth/8;
+                double heightDiv4 = windowHeight/4;
+                double scale = Math.max(imgWidth/widthDiv8, imgHeight/heightDiv4);
+
+                image.setSize(Math.round(imgWidth/scale)+"px",Math.round(imgHeight/scale)+"px");
+            }
+        });
+
         imagePanel.add(image);
 
 
         imageAndInfo.add(imagePanel);
         imageAndInfo.add(userLayout);
-        decPanel.setWidget(imageAndInfo);
+        //decPanel.setWidget();
 
         userLayout.setWidth(windowWidth/8+"px");
         userLayout.setHeight(windowHeight/4+"px");
         mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         mainPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        mainPanel.add(decPanel);
+        mainPanel.add(imageAndInfo);
 
     }
 

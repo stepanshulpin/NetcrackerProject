@@ -7,6 +7,7 @@ com\shulpin\server\service\UserService.class
 com\shulpin\server\dao\UserInfoDaoImpl.class
 com\shulpin\shared\model\UserInfo.class
 com\shulpin\client\MainView$1$1.class
+com\shulpin\client\UserView$1.class
 com\shulpin\server\service\UserInfoService.class
 com\shulpin\client\MainView$1.class
 com\shulpin\server\service\MessageService.class
@@ -49,6 +50,7 @@ com\shulpin\client\MainView$7$1.class
 com\shulpin\client\MainView$9.class
 com\shulpin\client\MainView$1$2.class
 com\shulpin\client\NetcrackerProject$3$1$1.class
+com\shulpin\client\InputDialog$2.class
 com\shulpin\client\NetcrackerProject$2$1.class
 com\shulpin\client\LoginView.class
 com\shulpin\client\MessageView.class

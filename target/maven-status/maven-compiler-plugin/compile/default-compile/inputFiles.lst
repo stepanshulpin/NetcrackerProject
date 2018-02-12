@@ -1,28 +1,28 @@
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\controller\BeInService.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\service\UserInfoServiceImpl.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\service\UserService.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\InputDialog.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\Service.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\service\MessageServiceImpl.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\MessageView.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\service\MessageService.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\shared\model\MyResponse.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\dao\AbstractDao.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\RegistrationView.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\service\UserInfoService.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\UserView.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\dao\UserDaoImpl.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\MainView.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\dao\UserInfoDaoImpl.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\dao\UserDao.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\LoginView.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\NetcrackerProject.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\dao\UserInfoDao.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\shared\model\User.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\shared\model\Selector.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\dao\MessageDao.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\shared\model\Message.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\client\DialogBoxOpener.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\dao\MessageDaoImpl.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\server\service\UserServiceImpl.java
-C:\Users\Stpns\IdeaProjects\NetcrackerProject\src\main\java\com\shulpin\shared\model\UserInfo.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\dao\UserDao.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\InputDialog.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\dao\UserInfoDaoImpl.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\controller\BeInService.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\dao\AbstractDao.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\service\UserInfoServiceImpl.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\service\UserInfoService.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\LoginView.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\service\MessageServiceImpl.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\Service.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\RegistrationView.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\dao\UserDaoImpl.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\service\UserService.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\dao\MessageDao.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\dao\UserInfoDao.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\shared\model\MyResponse.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\shared\model\Selector.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\MainView.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\service\MessageService.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\shared\model\Message.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\dao\MessageDaoImpl.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\NetcrackerProject.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\UserView.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\shared\model\User.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\DialogBoxOpener.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\client\MessageView.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\server\service\UserServiceImpl.java
+C:\Users\Stpns\IdeaProjects\NetcrackerProject Ч копи€\src\main\java\com\shulpin\shared\model\UserInfo.java
